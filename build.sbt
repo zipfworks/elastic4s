@@ -5,11 +5,13 @@ name := "elastic4s"
 
 organization := "com.sksamuel.elastic4s"
 
-version := "1.3.2"
+version := "1.3.3-SNAPSHOT"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.10.4"
 
 crossScalaVersions := Seq("2.10.4", "2.11.2")
+
+credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
@@ -17,14 +19,14 @@ publishMavenStyle := true
 
 javacOptions ++= Seq("-source", "1.7", "-target", "1.7")
 
-publishTo <<= version {
-  (v: String) =>
-    val nexus = "https://oss.sonatype.org/"
-    if (v.trim.endsWith("SNAPSHOT"))
-      Some("snapshots" at nexus + "content/repositories/snapshots")
-    else
-      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+publishTo := {
+  val nexus = "http://nexus.zipfworks.com/content/repositories/"
+  if (version.value.trim.endsWith("SNAPSHOT"))
+    Some("snapshots" at nexus + "snapshots")
+  else
+    Some("releases" at nexus + "releases")
 }
+
 
 publishArtifact in Test := false
 
